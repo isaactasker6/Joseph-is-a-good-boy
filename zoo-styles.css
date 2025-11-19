@@ -1,0 +1,86 @@
+body{
+    background-color: #d6b864;
+    font-family: "trebuchet MS", Arial, Helvetica, sans-serif
+
+}
+#container{
+    /* The 80% is relative to the height of the <body> element (which is 100% of the viewport) */
+    height: 80%;
+    /* Optional: Add a background or border to see the effect clearly */
+    background-color: #FFF;
+    border: 2px solid #52331C;
+    /* Optional: Center the content horizontally, if desired */
+    width: 80%; /* e.g., if you also want 80% width */
+    margin: 0 auto;
+
+}
+/*TEXT STYLES*/
+h1{
+    font-family: "Arial Black", Gadget, sans-serif
+    font-size: 76px;
+    color: #4D331E
+    margin-top: 0px;
+    margin-bottom: 0px;
+
+
+
+}
+h2{
+    font-weight: normal;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+h3{
+    margin-top: 0px;   
+    font-size: 26px;
+    color:#4D331E;
+    font-weight: bold;
+
+}
+p{
+    font-size: 16px;
+    color: #4D331E;
+    padding: 0px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+/*MENU SECTION*/
+#menu{
+    width: 170px;
+    float: left;
+
+}
+#menu ul{
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+
+}
+#menu li{
+    background-color: #E8CC9F;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 4px;
+    
+
+
+}
+
+/*LINK STYLES*/
+a:link, a:visited{
+    color: #060
+    font-weight: bold;
+    text-decoration: none;
+
+}
+a:hover, a:active{
+    color: #900
+    text-decoration: underline;
+}
+/*CLASS STYLES*/
+.rightfloat{
+    border: 2px solid #060
+    margin: 8px;
+    float: right;
+}

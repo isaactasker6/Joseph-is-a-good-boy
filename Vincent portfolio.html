@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Photographer's Portfolio - Visual Journeys</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Configure Tailwind to use Inter font and custom theme -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': '#1f2937', // Dark Grey/Slate
+                        'accent': '#fbbf24', // Amber
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles for a cleaner mobile gallery view */
+        .photo-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .photo-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Ensure smooth scrolling for navigation */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800">
+
+    <!-- Header & Navigation -->
+    <header class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
+            <h1 class="text-2xl font-bold text-primary">
+                <a href="#">PIXELSCAPE</a>
+            </h1>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#gallery" class="text-lg text-gray-600 hover:text-accent transition duration-150">Gallery</a>
+                <a href="#about" class="text-lg text-gray-600 hover:text-accent transition duration-150">About</a>
+                <a href="#contact" class="text-lg text-gray-600 hover:text-accent transition duration-150">Contact</a>
+            </nav>
+            <!-- Mobile Menu Button (Hamburger) -->
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-accent">
+                <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white">
+            <a href="#gallery" class="block py-2 px-6 text-lg text-primary hover:bg-gray-100">Gallery</a>
+            <a href="#about" class="block py-2 px-6 text-lg text-primary hover:bg-gray-100">About</a>
+            <a href="#contact" class="block py-2 px-6 text-lg text-primary hover:bg-gray-100">Contact</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="relative h-96 sm:h-[500px] flex items-center justify-center bg-gray-900 overflow-hidden rounded-b-lg shadow-xl mx-2 md:mx-4">
+            <!-- Background Image: Updated to use Joseph4.png -->
+            <img src="Joseph4.png" 
+                 class="absolute inset-0 w-full h-full object-cover opacity-60" 
+                 alt="The main portfolio hero image.">
+            
+            <div class="relative z-10 text-center p-6 bg-black bg-opacity-40 rounded-xl">
+                <h2 class="text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-tight mb-4">
+                    Capturing The Unseen
+                </h2>
+                <p class="text-lg sm:text-xl text-gray-200 mb-6">
+                    A visual journal of light, travel, and fleeting moments.
+                </p>
+                <a href="#gallery" class="inline-block px-8 py-3 text-lg font-semibold bg-accent text-primary rounded-full shadow-lg hover:bg-yellow-500 transition duration-300 transform hover:scale-105">
+                    View Portfolio
+                </a>
+            </div>
+        </section>
+
+        <!-- Photo Gallery Section -->
+        <section id="gallery" class="py-16 md:py-24 px-4 md:px-8">
+            <div class="container mx-auto">
+                <h3 class="text-4xl font-extrabold text-primary mb-12 text-center">Featured Work</h3>
+
+                <!-- Filter/Category Bar -->
+                <div class="flex flex-wrap justify-center space-x-2 md:space-x-4 mb-12">
+                    <button class="filter-btn px-4 py-2 text-sm md:text-base font-medium rounded-full bg-accent text-primary transition duration-200" data-category="all">All</button>
+                    <button class="filter-btn px-4 py-2 text-sm md:text-base font-medium rounded-full bg-gray-200 hover:bg-accent hover:text-primary transition duration-200" data-category="landscape">Landscape</button>
+                    <button class="filter-btn px-4 py-2 text-sm md:text-base font-medium rounded-full bg-gray-200 hover:bg-accent hover:text-primary transition duration-200" data-category="portrait">Portrait</button>
+                    <button class="filter-btn px-4 py-2 text-sm md:text-base font-medium rounded-full bg-gray-200 hover:bg-accent hover:text-primary transition duration-200" data-category="street">Street</button>
+                </div>
+
+                <!-- Gallery Grid - Responsive Masonry/Grid Feel -->
+                <div id="photo-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    
+                    <!-- Photo 1: Landscape (Updated to Joseph4.png) -->
+                    <div class="gallery-item landscape all">
+                        <div class="photo-card bg-white rounded-xl shadow-lg overflow-hidden" onclick="openModal('Joseph4.png', 'A breathtaking view of the peaks at dawn.')">
+                            <img src="Joseph4.png" alt="Mountain View" class="w-full h-auto object-cover aspect-[4/3]">
+                            <div class="p-3 text-center text-sm font-semibold text-primary">Mountain View</div>
+                        </div>
+                    </div>
+
+                    <!-- Photo 2: Portrait (Updated to Joseph4.png) -->
+                    <div class="gallery-item portrait all">
+                        <div class="photo-card bg-white rounded-xl shadow-lg overflow-hidden" onclick="openModal('Joseph4.png', 'A candid portrait captured in the city.')">
+                            <img src="Joseph4.png" alt="Urban Portrait" class="w-full h-auto object-cover aspect-[3/4]">
+                            <div class="p-3 text-center text-sm font-semibold text-primary">Urban Portrait</div>
+                        </div>
+                    </div>
+
+                    <!-- Photo 3: Street (Updated to Joseph4.png) -->
+                    <div class="gallery-item street all">
+                        <div class="photo-card bg-white rounded-xl shadow-lg overflow-hidden" onclick="openModal('Joseph4.png', 'Reflections on a wet city street at night.')">
+                            <img src="Joseph4.png" alt="Rainy City Street" class="w-full h-auto object-cover aspect-[4/3]">
+                            <div class="p-3 text-center text-sm font-semibold text-primary">Rainy City Street</div>
+                        </div>
+                    </div>
+
+                    <!-- Photo 4: Landscape (Updated to Joseph4.png) -->
+                    <div class="gallery-item landscape all">
+                        <div class="photo-card bg-white rounded-xl shadow-lg overflow-hidden" onclick="openModal('Joseph4.png', 'The vibrant colors of a desert sunset.')">
+                            <img src="Joseph4.png" alt="Desert Sunset" class="w-full h-auto object-cover aspect-[16/10]">
+                            <div class="p-3 text-center text-sm font-semibold text-primary">Desert Sunset</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Photo 5: Portrait (Updated to Joseph4.png) -->
+                    <div class="gallery-item portrait all">
+                        <div class="photo-card bg-white rounded-xl shadow-lg overflow-hidden" onclick="openModal('Joseph4.png', 'A high-key studio portrait.')">
+                            <img src="Joseph4.png" alt="Studio Portrait" class="w-full h-auto object-cover aspect-[6/7]">
+                            <div class="p-3 text-center text-sm font-semibold text-primary">Studio Portrait</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Photo 6: Street (Updated to Joseph4.png) -->
+                    <div class="gallery-item street all">
+                        <div class="photo-card bg-white rounded-xl shadow-lg overflow-hidden" onclick="openModal('Joseph4.png', 'A moody shot in a historic alleyway.')">
+                            <img src="Joseph4.png" alt="Alleyway Scene" class="w-full h-auto object-cover aspect-[16/9]">
+                            <div class="p-3 text-center text-sm font-semibold text-primary">Alleyway Scene</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Photo 7: Landscape (Updated to Joseph4.png) -->
+                    <div class="gallery-item landscape all">
+                        <div class="photo-card bg-white rounded-xl shadow-lg overflow-hidden" onclick="openModal('Joseph4.png', 'Fog rolling over a rugged coastline.')">
+                            <img src="Joseph4.png" alt="Coastal Fog" class="w-full h-auto object-cover aspect-square">
+                            <div class="p-3 text-center text-sm font-semibold text-primary">Coastal Fog</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Photo 8: Street (Updated to Joseph4.png) -->
+                    <div class="gallery-item street all">
+                        <div class="photo-card bg-white rounded-xl shadow-lg overflow-hidden" onclick="openModal('Joseph4.png', 'A vibrant street performer in action.')">
+                            <img src="Joseph4.png" alt="Street Performer" class="w-full h-auto object-cover aspect-[4/5]">
+                            <div class="p-3 text-center text-sm font-semibold text-primary">Street Performer</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-16 md:py-24 bg-gray-100 px-4 md:px-8">
+            <div class="container mx-auto max-w-4xl text-center">
+                <h3 class="text-4xl font-extrabold text-primary mb-6">The Eye Behind The Lens</h3>
+                <p class="text-lg text-gray-600 mb-8">
+                    My name is [Your Name], and I specialize in capturing the raw emotion and natural light of the world around us. From the solitude of remote mountains to the dynamic energy of city streets, my work aims to tell a story with every shutter click. I believe photography is about finding beauty in the ordinary and preserving moments that would otherwise be lost.
+                </p>
+                <div class="flex justify-center space-x-6">
+                    <div class="text-primary text-4xl">
+                        <!-- Example Icon: Camera -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 inline-block"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+                        <span class="block text-base mt-2">Gear Lover</span>
+                    </div>
+                    <div class="text-primary text-4xl">
+                        <!-- Example Icon: Map Pin -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 inline-block"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        <span class="block text-base mt-2">World Traveler</span>
+                    </div>
+                    <div class="text-primary text-4xl">
+                        <!-- Example Icon: Sun -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 inline-block"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+                        <span class="block text-base mt-2">Natural Light</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-16 md:py-24 px-4 md:px-8">
+            <div class="container mx-auto max-w-2xl">
+                <h3 class="text-4xl font-extrabold text-primary mb-6 text-center">Get In Touch</h3>
+                <p class="text-lg text-gray-600 mb-8 text-center">
+                    Interested in prints, commissions, or collaborations? Send me a message!
+                </p>
+
+                <form class="bg-white p-8 rounded-xl shadow-2xl border border-gray-100">
+                    <div class="mb-6">
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                        <input type="text" id="name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent" placeholder="Your Name">
+                    </div>
+                    <div class="mb-6">
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                        <input type="email" id="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent" placeholder="your.email@example.com">
+                    </div>
+                    <div class="mb-6">
+                        <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                        <textarea id="message" rows="4" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-accent focus:border-accent" placeholder="I would love to discuss a project..."></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="w-full sm:w-auto px-8 py-3 text-lg font-semibold bg-primary text-white rounded-full shadow-md hover:bg-gray-700 transition duration-300 transform hover:scale-105">
+                            Send Message
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white py-10 px-4 md:px-8">
+        <div class="container mx-auto text-center border-t border-gray-700 pt-8">
+            <p class="text-sm">&copy; <span id="current-year"></span> The Photographer's Portfolio. All rights reserved.</p>
+            <div class="flex justify-center space-x-4 mt-3">
+                <a href="#" class="text-gray-300 hover:text-accent transition duration-150">Instagram</a>
+                <a href="#" class="text-gray-300 hover:text-accent transition duration-150">Facebook</a>
+                <a href="#" class="text-gray-300 hover:text-accent transition duration-150">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal/Lightbox Structure -->
+    <div id="image-modal" class="fixed inset-0 bg-black bg-opacity-90 z-[9999] hidden flex justify-center items-center p-4" onclick="closeModal(event)">
+        <div class="relative max-w-5xl w-full max-h-full" onclick="event.stopPropagation()">
+            <!-- Close Button -->
+            <button class="absolute top-4 right-4 text-white text-3xl z-10 p-2 rounded-full hover:bg-gray-700 transition" onclick="closeModal()">
+                &times;
+            </button>
+            <img id="modal-image" src="" alt="Full-size image" class="max-w-full max-h-[85vh] object-contain mx-auto rounded-lg shadow-2xl">
+            <p id="modal-caption" class="text-center text-white mt-4 text-lg bg-black bg-opacity-50 p-2 rounded-lg"></p>
+        </div>
+    </div>
+
+
+    <script>
+        // --- Core JavaScript for Interactivity ---
+
+        // 1. Mobile Menu Toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // 2. Dynamic Year in Footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // 3. Image Modal (Lightbox) Functions
+        const modal = document.getElementById('image-modal');
+        const modalImage = document.getElementById('modal-image');
+        const modalCaption = document.getElementById('modal-caption');
+
+        function openModal(imageSrc, captionText) {
+            modalImage.src = imageSrc;
+            modalCaption.textContent = captionText;
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling underneath
+        }
+
+        function closeModal(event) {
+            // Check if the click was on the overlay (modal background) itself, not the content
+            if (event && event.target !== modal) return; 
+            modal.classList.add('hidden');
+            document.body.style.overflow = ''; // Restore scrolling
+        }
+
+        // Add keyboard escape key listener to close modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+
+
+        // 4. Gallery Filtering
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        const activeClass = 'bg-accent text-primary';
+        const inactiveClass = 'bg-gray-200 hover:bg-accent hover:text-primary';
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const category = button.getAttribute('data-category');
+
+                // Update active button styling
+                filterButtons.forEach(btn => {
+                    btn.classList.remove(activeClass);
+                    btn.classList.add(inactiveClass);
+                });
+                button.classList.remove(inactiveClass);
+                button.classList.add(activeClass);
+
+
+                // Filter gallery items
+                galleryItems.forEach(item => {
+                    // Show item if category is 'all' OR if the item has the matching category class
+                    if (category === 'all' || item.classList.contains(category)) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Initialize: Set the 'All' button as active on load
+        document.querySelector('.filter-btn[data-category="all"]').click();
+
+        // 5. Scroll to anchors from mobile menu
+        document.querySelectorAll('#mobile-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                // Hide mobile menu after clicking a link
+                document.getElementById('mobile-menu').classList.add('hidden');
+            });
+        });
+
+    </script>
+</body>
+</html>

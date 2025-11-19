@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joseph's Complex Platformer (Single File)</title>
+    
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #2c3e50; /* Dark blue background */
+        }
+        #gameCanvas {
+            border: 4px solid #f39c12; /* Orange border */
+            background-color: #34495e; /* Canvas background */
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // --- Game Constants and Variables ---
+        const GRAVITY = 0.98;
+        const JUMP_STRENGTH = -15;
+        const MOVE_SPEED = 5;
+
+        let keys = {};
+        let gameStarted = false;
+
+        // --- Player Object ---
+        let player = {
+            x: 50,
+            y: 50,
+            width: 40,
+            height: 40,
+            velocityX: 0,
+            velocityY: 0,
+            isOnGround: false,
+            image: new Image(),
+        };
+        // IMPORTANT: The image must be in the same folder as this HTML file!
+        player.image.src = 'Joseph4.png';
+
+        // --- Level Design (Platforms) ---
+        // Each platform is defined by { x, y, width, height, color }
+        const platforms = [
+            // Ground
+            { x: 0, y: canvas.height - 20, width: canvas.width, height: 20, color: '#27ae60' }, 
+            // Floating platform 1
+            { x: 150, y: canvas.height - 150, width: 100, height: 20, color: '#e67e22' },
+            // Floating platform 2
+            { x: 350, y: canvas.height - 250, width: 200, height: 20, color: '#c0392b' },
+            // Wall (can also be a platform)
+            { x: 650, y: canvas.height - 200, width: 50, height: 180, color: '#7f8c8d' } 
+        ];
+
+        // --- Input Handling ---
+        document.addEventListener('keydown', (e) => {
+            keys[e.key] = true;
+            if (!gameStarted && player.image.complete) {
+                gameStarted = true;
+                gameLoop();
+            }
+        });
+        document.addEventListener('keyup', (e) => {
+            keys[e.key] = false;
+        });
+
+        // --- Collision Detection Function (AABB) ---
+        function checkCollision(rectA, rectB) {
+            return rectA.x < rectB.x + rectB.width &&
+                   rectA.x + rectA.width > rectB.x &&
+                   rectA.y < rectB.y + rectB.height &&
+                   rectA.y + rectA.height > rectB.y;
+        }
+
+        // --- Update Function (Physics and Movement) ---
+        function update() {
+            // Reset horizontal velocity
+            player.velocityX = 0;
+            
+            // Horizontal Movement (WASD or Arrows)
+            if (keys['ArrowLeft'] || keys['a']) {
+                player.velocityX = -MOVE_SPEED;
+            }
+            if (keys['ArrowRight'] || keys['d']) {
+                player.velocityX = MOVE_SPEED;
+            }
+
+            // Jumping (Spacebar or ArrowUp/W)
+            if ((keys[' '] || keys['ArrowUp'] || keys['w']) && player.isOnGround) {
+                player.velocityY = JUMP_STRENGTH;
+                player.isOnGround = false;
+            }
+
+            // Apply Gravity
+            player.velocityY += GRAVITY;
+
+            // Apply velocities to position
+            player.x += player.velocityX;
+            player.y += player.velocityY;
+
+            // --- Collision Resolution ---
+            player.isOnGround = false;
+            
+            platforms.forEach(platform => {
+                const platformRect = { x: platform.x, y: platform.y, width: platform.width, height: platform.height };
+                const playerRect = { x: player.x, y: player.y, width: player.width, height: player.height };
+                
+                if (checkCollision(playerRect, platformRect)) {
+                    // Check if player is falling (collision from above)
+                    if (player.velocityY > 0 && playerRect.y + playerRect.height - player.velocityY <= platformRect.y) {
+                        player.y = platformRect.y - player.height;
+                        player.velocityY = 0;
+                        player.isOnGround = true;
+                    } 
+                    // Check if player hit the ceiling (collision from below)
+                    else if (player.velocityY < 0 && playerRect.y - player.velocityY >= platformRect.y + platformRect.height) {
+                        player.y = platformRect.y + platformRect.height;
+                        player.velocityY = 0;
+                    }
+                    // Horizontal Collision (check previous x position)
+                    else if (player.velocityX > 0 && playerRect.x + playerRect.width - player.velocityX <= platformRect.x) {
+                        player.x = platformRect.x - player.width;
+                    } 
+                    else if (player.velocityX < 0 && playerRect.x - player.velocityX >= platformRect.x + platformRect.width) {
+                        player.x = platformRect.x + platformRect.width;
+                    }
+                }
+            });
+
+            // Simple Fall Check (Off the bottom of the screen)
+            if (player.y > canvas.height) {
+                // Reset player
+                player.x = 50;
+                player.y = 50;
+                player.velocityY = 0;
+            }
+        }
+
+        // --- Draw Function ---
+        function draw() {
+            // 1. Clear the canvas
+            ctx.fillStyle = '#34495e';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // 2. Draw Platforms
+            platforms.forEach(p => {
+                ctx.fillStyle = p.color;
+                ctx.fillRect(p.x, p.y, p.width, p.height);
+            });
+
+            // 3. Draw Player (your photo)
+            if (player.image.complete) {
+                ctx.drawImage(
+                    player.image, 
+                    player.x, 
+                    player.y, 
+                    player.width, 
+                    player.height
+                );
+            } else {
+                ctx.fillStyle = 'white';
+                ctx.fillRect(player.x, player.y, player.width, player.height);
+            }
+            
+            // Draw instructions if the game hasn't started
+            if (!gameStarted) {
+                ctx.fillStyle = 'white';
+                ctx.font = '24px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText("Press W, Space, or Arrow Keys to Start!", canvas.width / 2, canvas.height / 2);
+            }
+        }
+
+        // --- Main Game Loop ---
+        function gameLoop() {
+            if (gameStarted) {
+                update();
+                draw();
+            }
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Start the animation loop
+        requestAnimationFrame(gameLoop);
+    </script>
+</body>
+</html>
